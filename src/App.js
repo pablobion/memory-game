@@ -1,38 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ReactCardFlip from "react-card-flip";
-import Teste from "./teste/index";
+import { Container, Card } from "./styles.js";
 
 function App() {
-    const [escolha1, setEscolha1] = useState("");
-    const [escolha2, setEscolha2] = useState("");
-    const [primeirocard, setprimeirocard] = useState();
-
-    const [flipCards, setFlipCards] = useState([]);
-    const [cards, setCards] = useState([]); //Emoji dos cars
-
-    const handleClickCard = ({ elem, e }) => {
-        if (!escolha1) {
-            setEscolha1(elem);
-            setprimeirocard(e);
-
-            return;
-        }
-
-        if (escolha1 === elem) {
-            setEscolha2(elem);
-            alert("achou");
-
-            setEscolha1("");
-            setEscolha2("");
-        }
-
-        setEscolha1("");
-        setEscolha2("");
-        setTimeout(() => {
-            primeirocard.target.style.background = "black";
-            e.target.style.background = "black";
-        }, 2000);
-    };
+    const [primeirocard, setPrimeirocard] = useState(); //Salva o icon para comparar
+    const [primeirocardindex, setPrimeirocardindex] = useState(); //Salva o index do primeiro item clicado
+    const [cardsFlip, setCardsFlip] = useState([]); //State que deixa visible o card
+    const [cards, setCards] = useState([]); //Array onde contem o emoji, literalmente os elementos
+    const [block, setBlock] = useState(false);
 
     const randomSort = () => {
         return 0.5 - Math.random();
@@ -50,51 +25,69 @@ function App() {
         setCards(array);
     }, []);
 
-    const handleClick = ({ e, index }) => {
-        console.log(flipCards[index]);
-        let arr = flipCards;
-        arr[index] = false;
-        console.log(flipCards);
-        setFlipCards(arr);
-        console.log(flipCards);
-        e.preventDefault();
+    const handleClick = ({ e, index, elem }) => {
+        if (block === true) return false; //Da return se dois cartões estiverem visiveis e irão fechar em breve.
+        if (cardsFlip[index] === true) {
+            setTimeout(() => {
+                const cardsflipaux = cardsFlip.slice();
+                cardsflipaux[index] = false;
+                cardsflipaux[primeirocardindex] = false;
+                setCardsFlip(cardsflipaux);
+                setBlock(false);
+            }, 1500);
+            return false;
+        }
+
+        setPrimeirocard("");
+        setPrimeirocardindex("");
+        const cardsflipaux = cardsFlip.slice();
+
+        cardsflipaux[index] ? (cardsflipaux[index] = false) : (cardsflipaux[index] = true);
+
+        if (cardsflipaux[index] === undefined) {
+            cardsflipaux[index] = true;
+        }
+
+        setCardsFlip(cardsflipaux);
+
+        if (!primeirocard) {
+            setPrimeirocard(elem);
+            setPrimeirocardindex(index);
+            return;
+        }
+        if (primeirocard === elem) {
+        } else {
+            setBlock(true);
+            setTimeout(() => {
+                const cardsflipaux = cardsFlip.slice();
+                cardsflipaux[index] = false;
+                cardsflipaux[primeirocardindex] = false;
+                setCardsFlip(cardsflipaux);
+                setBlock(false);
+            }, 1500);
+        }
+
+        setCardsFlip(cardsflipaux);
     };
 
     return (
-        <>
-            <h1>{escolha1}</h1>
-            <h1>{escolha2}</h1>
+        <Container>
+            {cards.map((elem, index) => {
+                return (
+                    <>
+                        <ReactCardFlip isFlipped={cardsFlip[index]} flipDirection="vertical">
+                            <Card onClick={(e) => handleClick({ e, index, elem })}>
+                                <h1>?</h1>
+                            </Card>
 
-            <div className="App" style={{ display: "flex", flexDirection: "column" }}>
-                {cards.map((elem, index) => {
-                    flipCards[index] = true;
-                    return (
-                        <>
-                            <div
-                                onClick={(e) => {
-                                    e.target.style.background = "transparent";
-                                    handleClickCard({ elem, e });
-                                }}
-                                style={{ border: "1px solid black", width: 100, height: 40, cursor: "pointer", marginBottom: 5, backgroundColor: "black" }}
-                            >
-                                [{elem}]
-                            </div>
-                            <ReactCardFlip isFlipped={() => flipCards[index]} flipDirection="vertical">
-                                <p>
-                                    This is the front of the card.
-                                    <button onClick={(e) => handleClick({ e, index })}>Click to flip</button>
-                                </p>
-
-                                <p>
-                                    This is the back of the card.
-                                    <button onClick={(e) => handleClick({ e, index })}>Click to flip</button>
-                                </p>
-                            </ReactCardFlip>
-                        </>
-                    );
-                })}
-            </div>
-        </>
+                            <Card onClick={(e) => handleClick({ e, index, elem })}>
+                                <h1> {elem}</h1>
+                            </Card>
+                        </ReactCardFlip>
+                    </>
+                );
+            })}
+        </Container>
     );
 }
 
