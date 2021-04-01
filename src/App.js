@@ -1,93 +1,37 @@
-import React, { useState, useEffect } from "react";
-import ReactCardFlip from "react-card-flip";
-import { Container, Card } from "./styles.js";
+import React, { useState } from "react";
+import { Container, GlobalStyle } from "./styles";
+import Game from "./pages/game";
 
 function App() {
-    const [primeirocard, setPrimeirocard] = useState(); //Salva o icon para comparar
-    const [primeirocardindex, setPrimeirocardindex] = useState(); //Salva o index do primeiro item clicado
-    const [cardsFlip, setCardsFlip] = useState([]); //State que deixa visible o card
-    const [cards, setCards] = useState([]); //Array onde contem o emoji, literalmente os elementos
-    const [block, setBlock] = useState(false);
-
-    const randomSort = () => {
-        return 0.5 - Math.random();
-    };
-    useEffect(() => {
-        let arr = ["🥙", "🍺", "🍕", "🍿", "🥩", "🎂"];
-        arr = arr.sort(randomSort);
-
-        let arr2 = ["🥙", "🍺", "🍕", "🍿", "🥩", "🎂"];
-        arr2 = arr2.sort(randomSort);
-
-        let array = arr.concat(arr2);
-        array = array.sort(randomSort);
-
-        setCards(array);
-    }, []);
-
-    const handleClick = ({ e, index, elem }) => {
-        if (block === true) return false; //Da return se dois cartões estiverem visiveis e irão fechar em breve.
-        if (cardsFlip[index] === true) {
-            setTimeout(() => {
-                const cardsflipaux = cardsFlip.slice();
-                cardsflipaux[index] = false;
-                cardsflipaux[primeirocardindex] = false;
-                setCardsFlip(cardsflipaux);
-                setBlock(false);
-            }, 1500);
-            return false;
-        }
-
-        setPrimeirocard("");
-        setPrimeirocardindex("");
-        const cardsflipaux = cardsFlip.slice();
-
-        cardsflipaux[index] ? (cardsflipaux[index] = false) : (cardsflipaux[index] = true);
-
-        if (cardsflipaux[index] === undefined) {
-            cardsflipaux[index] = true;
-        }
-
-        setCardsFlip(cardsflipaux);
-
-        if (!primeirocard) {
-            setPrimeirocard(elem);
-            setPrimeirocardindex(index);
-            return;
-        }
-        if (primeirocard === elem) {
-        } else {
-            setBlock(true);
-            setTimeout(() => {
-                const cardsflipaux = cardsFlip.slice();
-                cardsflipaux[index] = false;
-                cardsflipaux[primeirocardindex] = false;
-                setCardsFlip(cardsflipaux);
-                setBlock(false);
-            }, 1500);
-        }
-
-        setCardsFlip(cardsflipaux);
-    };
+    const [play, setPlay] = useState(false);
+    const [nCards, setNcards] = useState(25);
 
     return (
-        <Container>
-            {cards.map((elem, index) => {
-                return (
+        <>
+            <Container>
+                {play ? (
+                    <Game nCards={nCards} />
+                ) : (
                     <>
-                        <ReactCardFlip isFlipped={cardsFlip[index]} flipDirection="vertical">
-                            <Card onClick={(e) => handleClick({ e, index, elem })}>
-                                <h1>?</h1>
-                            </Card>
+                        <h1>Matching Game</h1>
 
-                            <Card onClick={(e) => handleClick({ e, index, elem })}>
-                                <h1> {elem}</h1>
-                            </Card>
-                        </ReactCardFlip>
+                        <div>
+                            <input type="text" placeholder="25" maxLength="2" min="2" max="50" onChange={(e) => setNcards(e.target.value)} />
+                            <h4>Nº Cards</h4>
+                        </div>
+                        <button
+                            onClick={() => {
+                                console.log(nCards);
+                                setPlay(true);
+                            }}
+                        >
+                            START
+                        </button>
                     </>
-                );
-            })}
-        </Container>
+                )}
+            </Container>
+            <GlobalStyle />
+        </>
     );
 }
 
