@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactCardFlip from "react-card-flip";
-import { Container, Card } from "./styles";
+import { Game, Container, Card } from "./styles";
 import { randomEmojis } from "../scripts/getemojis";
 
 //components
@@ -13,6 +13,7 @@ function App(props) {
     const [cardsFlip, setCardsFlip] = useState([]); //State que deixa visible o card
     const [cards, setCards] = useState([]); //Array onde contem o emoji, literalmente os elementos
     const [block, setBlock] = useState(false);
+    const [moves, setMoves] = useState(0);
 
     const startCards = () => {
         let emojis = randomEmojis(props.nCards);
@@ -34,7 +35,7 @@ function App(props) {
 
     const handleClick = ({ e, index, elem }) => {
         if (block) return false; //Da return se dois cartões estiverem visiveis e irão fechar em breve.
-        if (cardsFlip[index] === true) {
+        if (cardsFlip[index]) {
             setTimeout(() => {
                 const cardsflipaux = cardsFlip.slice();
                 cardsflipaux[index] = false;
@@ -71,6 +72,7 @@ function App(props) {
                 cardsflipaux[primeirocardindex] = false;
                 setCardsFlip(cardsflipaux);
                 setBlock(false);
+                setMoves(moves + 1);
             }, 1000);
         }
 
@@ -78,9 +80,13 @@ function App(props) {
     };
 
     return (
-        <>
-            <button onClick={resetCards}>Restart</button>
-            <Container>
+        <Container>
+            <div id="header">
+                <button onClick={resetCards}>Restart</button>
+                <h1>Moves: {moves}</h1>
+            </div>
+
+            <Game>
                 {cards.map((elem, index) => {
                     return (
                         <ReactCardFlip isFlipped={cardsFlip[index]} flipDirection="vertical" key={index}>
@@ -94,8 +100,8 @@ function App(props) {
                         </ReactCardFlip>
                     );
                 })}
-            </Container>
-        </>
+            </Game>
+        </Container>
     );
 }
 

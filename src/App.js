@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, GlobalStyle } from "./styles";
 import Game from "./pages/game";
+import img from "./logo-gif.gif";
 
 function App() {
     const [play, setPlay] = useState(false);
@@ -14,7 +15,7 @@ function App() {
                 ) : (
                     <>
                         <h1>Matching Game</h1>
-
+                        <img src={img} alt="" />
                         <div>
                             <input type="text" placeholder="25" maxLength="2" min="2" max="50" onChange={(e) => setNcards(e.target.value)} />
                             <h4>Nº Cards</h4>
