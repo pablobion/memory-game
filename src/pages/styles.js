@@ -92,5 +92,8 @@ export const Game = styled.label`
 
     flex-wrap: wrap;
     width: 1000px;
+    @media (max-width: 1000px) {
+        width: 90vw;
+    }
     height: 500px;
 `;

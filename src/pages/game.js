@@ -24,6 +24,7 @@ function App(props) {
     const resetCards = () => {
         const auxcardsFlip = cardsFlip.map(() => false);
         setCardsFlip(auxcardsFlip);
+        setMoves(0);
         setTimeout(() => {
             startCards();
         }, 1000);

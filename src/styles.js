@@ -65,6 +65,12 @@ export const Container = styled.div`
     h1 {
         color: white;
         font-size: 40px;
+        text-align: center;
+    }
+    img {
+        @media (max-width: 700px) {
+            width: 150vw;
+        }
     }
 
     div {
