@@ -22,8 +22,7 @@ function App(props) {
     };
 
     const resetCards = () => {
-        const auxcardsFlip = cardsFlip.map(() => false);
-        setCardsFlip(auxcardsFlip);
+        setCardsFlip(cardsFlip.map(() => false));
         setMoves(0);
         setTimeout(() => {
             startCards();
@@ -36,6 +35,7 @@ function App(props) {
 
     const handleClick = ({ e, index, elem }) => {
         if (block) return false; //Da return se dois cartões estiverem visiveis e irão fechar em breve.
+
         if (cardsFlip[index]) {
             setTimeout(() => {
                 const cardsflipaux = cardsFlip.slice();
@@ -95,7 +95,7 @@ function App(props) {
                                 <FrontCard />
                             </Card>
 
-                            <Card onClick={(e) => handleClick({ e, index, elem })}>
+                            <Card>
                                 <BackCard style={{ overflow: "hidden" }}> {elem}</BackCard>
                             </Card>
                         </ReactCardFlip>
