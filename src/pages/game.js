@@ -25,9 +25,11 @@ function App(props) {
     const resetCards = () => {
         setCardsFlip(cardsFlip.map(() => false));
         setMoves(0);
+        setIndexprimeiroCard("");
+        setPrimeiroCard("");
         setTimeout(() => {
             startCards();
-        }, 1000);
+        }, 500);
     };
 
     const flipCard = (index) => {
