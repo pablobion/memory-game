@@ -83,6 +83,7 @@ export const Card = styled.div`
     cursor: pointer;
     border-radius: 20px;
     overflow: hidden;
+    user-select: none;
 `;
 
 export const Game = styled.label`

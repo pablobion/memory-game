@@ -22,7 +22,6 @@ function App() {
                         </div>
                         <button
                             onClick={() => {
-                                console.log(nCards);
                                 setPlay(true);
                             }}
                         >

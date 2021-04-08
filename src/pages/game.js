@@ -8,12 +8,14 @@ import BackCard from "../components/card/back";
 import FrontCard from "../components/card/front";
 
 function App(props) {
-    const [primeirocard, setPrimeirocard] = useState(); //Salva o icon para comparar
-    const [primeirocardindex, setPrimeirocardindex] = useState(); //Salva o index do primeiro item clicado
+    const [primeiroCard, setPrimeiroCard] = useState(""); //Salva o icon para comparar
+    const [indexprimeiroCard, setIndexprimeiroCard] = useState();
     const [cardsFlip, setCardsFlip] = useState([]); //State que deixa visible o card
     const [cards, setCards] = useState([]); //Array onde contem o emoji, literalmente os elementos
-    const [block, setBlock] = useState(false);
     const [moves, setMoves] = useState(0);
+    const [paresEncontrados, setParesEncontrados] = useState(0);
+    const [block, setBlock] = useState(false);
+    const [startGame, setStartGame] = useState(false);
 
     const startCards = () => {
         let emojis = randomEmojis(props.nCards);
@@ -29,61 +31,55 @@ function App(props) {
         }, 1000);
     };
 
+    const flipCard = (index) => {
+        const cardsflipaux = cardsFlip.slice();
+        cardsflipaux[index] ? (cardsflipaux[index] = false) : (cardsflipaux[index] = true);
+        setCardsFlip(cardsflipaux);
+    };
+
     useEffect(() => {
-        startCards();
-    }, []);
+        if (!startGame) {
+            startCards();
+            setStartGame(false);
+        }
+
+        if (paresEncontrados >= props.nCards) alert("Congratulations!!!!");
+    }, [paresEncontrados]);
 
     const handleClick = ({ e, index, elem }) => {
-        if (block) return false; //Da return se dois cartões estiverem visiveis e irão fechar em breve.
+        if (block) return false; //Da return se ja tem dois cartoes selecionados e irão virar.
 
-        if (cardsFlip[index]) {
-            setTimeout(() => {
-                const cardsflipaux = cardsFlip.slice();
-                cardsflipaux[index] = false;
-                cardsflipaux[primeirocardindex] = false;
-                setCardsFlip(cardsflipaux);
-                setBlock(false);
-            }, 1000);
-            return false;
-        }
+        setPrimeiroCard("");
+        setIndexprimeiroCard("");
+        flipCard(index);
 
-        setPrimeirocard("");
-        setPrimeirocardindex("");
-        const cardsflipaux = cardsFlip.slice();
-
-        cardsflipaux[index] ? (cardsflipaux[index] = false) : (cardsflipaux[index] = true);
-
-        if (cardsflipaux[index] === undefined) {
-            cardsflipaux[index] = true;
-        }
-
-        setCardsFlip(cardsflipaux);
-
-        if (!primeirocard) {
-            setPrimeirocard(elem);
-            setPrimeirocardindex(index);
+        if (!primeiroCard) {
+            setPrimeiroCard(elem);
+            setIndexprimeiroCard(index);
             return;
         }
-        if (primeirocard === elem) {
-        } else {
+        if (primeiroCard === elem) {
+            setParesEncontrados(paresEncontrados + 1);
+        }
+
+        if (primeiroCard !== elem) {
             setBlock(true);
             setTimeout(() => {
                 const cardsflipaux = cardsFlip.slice();
                 cardsflipaux[index] = false;
-                cardsflipaux[primeirocardindex] = false;
+                cardsflipaux[indexprimeiroCard] = false;
                 setCardsFlip(cardsflipaux);
                 setBlock(false);
                 setMoves(moves + 1);
             }, 1000);
         }
-
-        setCardsFlip(cardsflipaux);
     };
 
     return (
         <Container>
             <div id="header">
                 <button onClick={resetCards}>Restart</button>
+                <h1>Pares encontrados: {paresEncontrados}</h1>
                 <h1>Moves: {moves}</h1>
             </div>
 
