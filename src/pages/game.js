@@ -13,7 +13,6 @@ function App(props) {
     const [cardsFlip, setCardsFlip] = useState([]); //State que deixa visible o card
     const [cards, setCards] = useState([]); //Array onde contem o emoji, literalmente os elementos
     const [moves, setMoves] = useState(0);
-    const [paresEncontrados, setParesEncontrados] = useState(0);
     const [block, setBlock] = useState(false);
     const [startGame, setStartGame] = useState(false);
 
@@ -42,9 +41,7 @@ function App(props) {
             startCards();
             setStartGame(false);
         }
-
-        if (paresEncontrados >= props.nCards) alert("Congratulations!!!!");
-    }, [paresEncontrados]);
+    }, []);
 
     const handleClick = ({ e, index, elem }) => {
         if (block) return false; //Da return se ja tem dois cartoes selecionados e irão virar.
@@ -57,9 +54,6 @@ function App(props) {
             setPrimeiroCard(elem);
             setIndexprimeiroCard(index);
             return;
-        }
-        if (primeiroCard === elem) {
-            setParesEncontrados(paresEncontrados + 1);
         }
 
         if (primeiroCard !== elem) {
@@ -79,7 +73,6 @@ function App(props) {
         <Container>
             <div id="header">
                 <button onClick={resetCards}>Restart</button>
-                <h1>Pares encontrados: {paresEncontrados}</h1>
                 <h1>Moves: {moves}</h1>
             </div>
 
