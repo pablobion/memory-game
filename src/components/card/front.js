@@ -9,7 +9,7 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: #1a2d4a;
+    background-color: #2f5184;
 `;
 
 function card() {
