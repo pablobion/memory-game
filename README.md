@@ -1,7 +1,7 @@
 
-<h3 align="center">
+<h1 align="center">
   Memory Game
-</h3>
+</h1>
 
 
 
@@ -15,6 +15,8 @@ Jogo da memoria feito em react, você deve encontrar os respectivos pares de cad
 
 React
 Styled-Components
+
+### Demo: https://pablobion.github.io/memory-game/
 
 
 ## 💻 Clonando repositório e executando
