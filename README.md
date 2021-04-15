@@ -11,6 +11,8 @@
 
 Jogo da memoria feito em react, você deve encontrar os respectivos pares de cada imagem através de turnos.
 
+![alt text](https://github.com/pablobion/memory-game/blob/master/preview.png?raw=true)
+
 ## 🚀 Tecnologias
 
 React
