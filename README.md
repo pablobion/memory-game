@@ -16,6 +16,7 @@ Jogo da memoria feito em react, você deve encontrar os respectivos pares de cad
 ## 🚀 Tecnologias
 
 React
+
 Styled-Components
 
 ### Demo: https://pablobion.github.io/memory-game/
